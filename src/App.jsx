@@ -9,7 +9,9 @@ const publicScreens = [
 
 function ServiceRoute() {
   const { screenCode } = useParams();
-  const screen = publicScreens.find((item) => item.code.toLowerCase() === (screenCode || '').toLowerCase()) || publicScreens[0];
+  const normalizedCode = (screenCode || '').toUpperCase();
+  const screen = publicScreens.find((item) => item.code === normalizedCode)
+    || (normalizedCode.startsWith('C') ? { code: normalizedCode, title: normalizedCode } : publicScreens[0]);
   return screen.code === 'P-01' ? <PublicHome /> : <StudentService screen={screen} />;
 }
 
